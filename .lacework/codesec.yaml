@@ -1,0 +1,4 @@
+default:
+  iac:
+    scan:
+      checkovModuleDownload: true

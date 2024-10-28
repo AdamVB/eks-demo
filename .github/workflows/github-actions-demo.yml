@@ -103,4 +103,4 @@ jobs:
           cd application
           terraform fmt
           terraform init
-          terraform plan -var='lw-datacollector-token=${{ secrets.LW_DATACOLLECTOR_TOKEN }}'
+          terraform apply -var='lw-datacollector-token=${{ secrets.LW_DATACOLLECTOR_TOKEN }}' --auto-approve=true

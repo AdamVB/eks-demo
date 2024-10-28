@@ -9,6 +9,9 @@ jobs:
   eks_plan:
     name: Terraform EKS plan
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout Repo to runner
         uses: actions/checkout@v4
@@ -29,6 +32,9 @@ jobs:
   app_plan:
     name: Terraform app plan
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout Repo to runner
         uses: actions/checkout@v4
@@ -52,6 +58,9 @@ jobs:
     needs: eks_plan
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout Repo to runner
         uses: actions/checkout@v4
@@ -75,6 +84,9 @@ jobs:
     needs: app_plan
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout Repo to runner
         uses: actions/checkout@v4

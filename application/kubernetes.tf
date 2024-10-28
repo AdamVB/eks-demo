@@ -24,7 +24,7 @@ provider "aws" {
 
 data "terraform_remote_state" "eks" {
   backend = "s3"
-  config {
+  config = {
     bucket = "abenesh-tf-backend"
     key = "terraformstate/eks-demo/eks"
     region = "eu-west-1"

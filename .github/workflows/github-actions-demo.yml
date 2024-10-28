@@ -49,7 +49,7 @@ jobs:
 
   deploy_eks:
     name: Terraform Deploy
-    needs: plan
+    needs: eks_plan
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
@@ -72,7 +72,7 @@ jobs:
 
   deploy_application:
     name: Terraform Deploy
-    needs: plan
+    needs: app_plan
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:

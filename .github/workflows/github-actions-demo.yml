@@ -31,6 +31,7 @@ jobs:
 
   app_plan:
     name: Terraform app plan
+    needs: deploy_eks
     runs-on: ubuntu-latest
     permissions:
       id-token: write

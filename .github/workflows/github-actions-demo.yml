@@ -51,7 +51,7 @@ jobs:
           cd application 
           terraform fmt
           terraform init 
-          terraform plan -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}'
+          terraform plan -var='lw-datacollector-token=${{ secrets.LW_DATACOLLECTOR_TOKEN }}'
 
 
   deploy_eks:
@@ -103,4 +103,4 @@ jobs:
           cd application
           terraform fmt
           terraform init
-          terraform apply -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}' --auto-approve=true
+          terraform plan -var='lw-datacollector-token=${{ secrets.LW_DATACOLLECTOR_TOKEN }}'

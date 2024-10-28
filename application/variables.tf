@@ -10,3 +10,9 @@ variable "example_api_key" {
   type        = string
   default     = "hello-world"
 }
+
+variable "lw-datacollector-token" {
+  description = "Lacework Agent Access Token"
+  type        = string
+  default     = "hello-world"
+}

@@ -1,0 +1,19 @@
+image:
+  tag: latest
+laceworkConfig:
+  env: "aws"
+  kubernetesCluster: "eks-demo"
+clusterAgent:
+  # [Optional] Should we install cluster agent.
+  enable: false
+  # [Optional] Cluster type.
+  clusterType: EKS
+  # [Optional] Cluster region.
+  clusterRegion: eu-west-1
+  # [Optional] Cluster mode agent's initial delay of cluster scraping after startup in minutes.
+  scrapeInitialDelayMins: 30
+  # [Optional] Cluster mode agent's scrape interval in minutes.
+  scrapeIntervalMins: 30
+  # [Optional] Route agent traffic through the specified proxy.
+  # https://docs.lacework.net/onboarding/restricted/configure-agent-behavior-in-configjson-file#proxyurl-propert
+  #proxyUrl: "http://eu-west-2.proxy.aws.uk.zzz:3128"  

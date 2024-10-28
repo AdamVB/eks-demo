@@ -25,3 +25,17 @@ resource "helm_release" "nginx" {
 }
 
 
+resource "helm_release" "lacework-agent" {
+  name       = "lacework-agent"
+  repository = "https://lacework.github.io/helm-charts/"
+  chart      = "lacework-agent"
+
+  values = [
+    file("${path.module}/lw-datacollector-values.yaml")
+  ]
+
+  set {
+    name  = "lw-datacollector-token"
+    value = var.lw-datacollector-token
+  }
+}

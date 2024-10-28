@@ -81,6 +81,24 @@ module "eks" {
     ami_type = "AL2_x86_64"
 
   }
+  access_entries = {
+    my_entry = {
+      kubernetes_groups = []
+      principal_arn     = "arn:aws:iam::680354150194:role/aws-reserved/sso.amazonaws.com/us-west-2/AWSReservedSSO_lw-cs1-admin-role_cd7cd1a737295c6d"
+
+      policy_associations = {
+        cluster = {
+          policy_arn = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = {
+            type = "cluster"
+          }
+        }
+      }
+    }
+  }
+
+
+
 
   eks_managed_node_groups = {
     one = {

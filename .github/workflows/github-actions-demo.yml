@@ -1,0 +1,93 @@
+name: EKS-Demo-Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  eks_plan:
+    name: Terraform EKS plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo to runner
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::680354150194:role/abenesh-github-test-Role-Vc5qXOXnQQ3L
+
+      - name: Initialise project and view terraform plan
+        run: |
+          cd eks 
+          terraform fmt
+          terraform init 
+          terraform plan -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}'
+
+  app_plan:
+    name: Terraform app plan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo to runner
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::680354150194:role/abenesh-github-test-Role-Vc5qXOXnQQ3L
+
+      - name: Initialise project and view terraform plan
+        run: |
+          cd application 
+          terraform fmt
+          terraform init 
+          terraform plan -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}'
+
+
+  deploy_eks:
+    name: Terraform Deploy
+    needs: plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo to runner
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::680354150194:role/abenesh-github-test-Role-Vc5qXOXnQQ3L
+
+      - name: Initialise EKS infra and deploy terraform
+        run: |
+          cd eks
+          terraform fmt
+          terraform init
+          terraform apply -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}' --auto-approve=true
+
+
+  deploy_application:
+    name: Terraform Deploy
+    needs: plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo to runner
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: eu-west-1
+          role-to-assume: arn:aws:iam::680354150194:role/abenesh-github-test-Role-Vc5qXOXnQQ3L
+
+      - name: Initialise app deployment and deploy terraform
+        run: |
+          cd application
+          terraform fmt
+          terraform init
+          terraform apply -var='example_api_key=${{ secrets.EXAMPLE_API_KEY }}' --auto-approve=true

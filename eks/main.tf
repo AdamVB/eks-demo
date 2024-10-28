@@ -1,9 +1,18 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+terraform {
+  backend "s3" {
+    bucket = "abenesh-tf-backend"
+    key    = "terraformstate/eks-demo/eks"
+    region = "eu-west-1"
+  }
+}
+
+
 provider "aws" {
   region = var.region
-  profile = "lwcs1"
+  #profile = "lwcs1"
 }
 
 # Filter out local zones, which are not currently supported 

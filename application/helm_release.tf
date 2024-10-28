@@ -35,7 +35,7 @@ resource "helm_release" "lacework-agent" {
   ]
 
   set {
-    name  = "lw-datacollector-token"
+    name  = "laceworkConfig.accessToken"
     value = var.lw-datacollector-token
   }
 }

@@ -7,7 +7,7 @@ clusterAgent:
   # [Optional] Should we install cluster agent.
   enable: false
   # [Optional] Cluster type.
-  clusterType: EKS
+  clusterType: eks
   # [Optional] Cluster region.
   clusterRegion: eu-west-1
   # [Optional] Cluster mode agent's initial delay of cluster scraping after startup in minutes.

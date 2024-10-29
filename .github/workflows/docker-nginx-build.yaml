@@ -1,6 +1,7 @@
 name: Build and Push Nginx Docker Image
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'docker/nginx/**'

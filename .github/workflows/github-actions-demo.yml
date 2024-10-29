@@ -1,5 +1,6 @@
 name: EKS-Demo-Workflow
 
+on:
   push:
     paths:
       - 'eks/**'

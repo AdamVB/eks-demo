@@ -26,15 +26,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build the Docker image
+      # Build the Docker image (repository name must be lowercase)
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/nginx:latest \
-                       -t ghcr.io/${{ github.repository }}/nginx:${{ github.sha }} \
+          docker build -t ghcr.io/${{ github.repository | toLower }}/nginx:latest \
+                       -t ghcr.io/${{ github.repository | toLower }}/nginx:${{ github.sha }} \
                        ./docker/nginx
 
       # Push the Docker image to GitHub Container Registry
       - name: Push Docker image
         run: |
-          docker push ghcr.io/${{ github.repository }}/nginx:latest
-          docker push ghcr.io/${{ github.repository }}/nginx:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository | toLower }}/nginx:latest
+          docker push ghcr.io/${{ github.repository | toLower }}/nginx:${{ github.sha }}

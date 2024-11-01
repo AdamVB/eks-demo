@@ -10,6 +10,6 @@ variable "region" {
 variable "example_api_key" {
   description = "example api key coming from github secret"
   type        = string
-  default     = "hello-world"
+  default     = "hello-world3"
 }
 

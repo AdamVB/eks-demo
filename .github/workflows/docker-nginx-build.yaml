@@ -9,7 +9,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/nginx-demo
+  IMAGE_NAME: nginx-demo
   IMAGE_TAG: ${{ github.GITHUB_SHA}}
 
 jobs:
@@ -37,8 +37,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Get short SHA
-        run: echo "GHA_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+      - id: read-docker-image-identifiers
+        name: Read Docker Image Identifiers
+        run: echo ::set-env name=IMAGE_REPOSITORY::$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') # repo names must be lowercase
+
+
+      - name: Get short SHA and Output
+        run: |
+           echo "GHA_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
+           # This pushes imagetag variable with the build SHA out to env
+           echo "IMAGE_TAG=${GITHUB_SHA}" >> $GITHUB_ENV
+           echo $GHA_SHA
+
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -46,7 +56,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Build and push Docker image
+      - name: Build Docker image
         id: load
         uses: docker/build-push-action@v3
         with:
@@ -54,7 +64,7 @@ jobs:
           push: false
           load: true
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GHA_SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY}}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -67,9 +77,9 @@ jobs:
         with:
           LW_ACCOUNT_NAME: ${{ secrets.LW_ACCOUNT_NAME }}
           LW_ACCESS_TOKEN: ${{ secrets.LW_PROXYSCANNER_TOKEN }}
-          IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY}}/${{ env.IMAGE_NAME }}
           # Default github environment variable wouldnt work here - stuffing imagetag as the TAG           
-          IMAGE_TAG: ${{ env.IMAGETAG }}
+          IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
           SAVE_RESULTS_IN_LACEWORK: true
           RESULTS_IN_GITHUB_SUMMARY: true
@@ -81,7 +91,7 @@ jobs:
           context: docker/nginx
           push: true
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GHA_SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY}}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
 
       #- name: Generate artifact attestation

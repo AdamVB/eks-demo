@@ -1,9 +1,9 @@
 name: lacework-iac-example-ga
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "main", "master" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main", "master" ]
   # Allows you to run this workflow manually from the Actions tab 
   workflow_dispatch:
   

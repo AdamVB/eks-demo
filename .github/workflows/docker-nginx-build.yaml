@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'docker/nginx/**'
+      - '.github/workflows/docker-nginx-build.yaml'
   workflow_dispatch:
 
 env:
@@ -50,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: docker/nginx
-          load: true
+          push: false
           #tags: ${{ steps.meta.outputs.tags }}
           tags: ${{ env.GHA_SHA }}
           labels: ${{ steps.meta.outputs.labels }}

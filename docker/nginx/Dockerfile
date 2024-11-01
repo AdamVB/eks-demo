@@ -1,5 +1,6 @@
 FROM bitnami/nginx:latest
 USER 0
+RUN apt-get update
 RUN apt-get autoremove --purge -y curl && \
     apt-get update && apt-get upgrade -y && \
     apt-get install node-abab && \

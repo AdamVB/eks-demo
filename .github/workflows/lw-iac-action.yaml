@@ -1,34 +1,57 @@
-name: lacework-iac-example-ga
 on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
-  # Allows you to run this workflow manually from the Actions tab 
-  workflow_dispatch:
-  
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+
+ # Triggers the workflow on push or pull request events but only for the "main" branch
+
+ push:
+
+   branches: [ "main" ]
+
+ pull_request:
+
+   branches: [ "main" ]
+
+ # Allows you to run this workflow manually from the Actions tab
+
+ workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  LW_ACCOUNT_NAME: ${{ secrets._LW_ACCOUNT_NAME }}
+  LW_API_KEY: ${{ secrets.LW_CODESEC_API_KEY }}
+  LW_API_SECRET: ${{ secrets.LW_CODESEC_API_SECRET }}
+
+name: Lacework Code Analysis (PR)
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  run-analysis:
     runs-on: ubuntu-20.04
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    name: Run analysis
+    strategy:
+      matrix:
+        target: [new, old]
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Scan the repo for vulnerabilities in IaC
-        run: |
-             # Required to pass the GITHUB and Lacework (LW) environment secrets to use
-             env | grep "GITHUB_\|LW_\|CI_" > env.list
-             # WORKSPACE is required and must match, or be a subdirectory of, the directory you bind with -v in the subsequent docker command
-             echo "WORKSPACE=/app/src" >> env.list
-             # if we want to fail the step for any critical failed findings (violations) in the assessment scan
-             echo "EXIT_FLAG=critical=1" >> env.list
-             # This line starts our docker container which will perform the scan, we are mounting pwd to /app/src in the container, pwd resolves to the root of the repo you are scanning. 
-             docker run --env-file env.list -v "$(pwd):/app/src" lacework/codesec-iac:latest
-        env:
-          LW_ACCOUNT: ${{ secrets.LW_ACCOUNT }}
-          LW_API_KEY: ${{ secrets.LW_CODESEC_API_KEY }}
-          LW_API_SECRET: ${{ secrets.LW_CODESEC_API_SECRET }}
+        with:
+          fetch-depth: 2
+      - name: Checkout old
+        if: ${{ matrix.target == 'old' }}
+        run: git checkout HEAD^1
+      - name: Analyze
+        uses: lacework/code-security-action@v1
+        with:
+          target: ${{ matrix.target }}
+          tools: sca 
+  display-results:
+    runs-on: ubuntu-20.04
+    name: Display results
+    needs:
+      - run-analysis
+    steps:
+      - name: Results
+        id: code-analysis
+        uses: lacework/code-security-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

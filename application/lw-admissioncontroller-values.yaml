@@ -1,0 +1,11 @@
+admission:
+  excluded_resources:
+    - "Deployment"
+    - "ReplicaSet"
+    - "DaemonSet"
+    - "Job"
+    - "CronJob"
+    - "StatefulSet"
+  policy:
+    block_exec: false
+    bypass_scope: "kube-system,kube-public,lacework"

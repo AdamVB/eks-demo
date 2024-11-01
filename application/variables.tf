@@ -17,3 +17,36 @@ variable "lw-datacollector-token" {
   type        = string
   default     = "hello-world"
 }
+
+
+variable "lw-proxyscanner-token" {
+  description = "Lacework Proxy Scanner Token"
+  type        = string
+  default     = "hello-world"
+}
+
+
+variable "lw-proxyscanner-cabundle" {
+  description = "Lacework Proxy Scanner CA Bundle"
+  type        = string
+  default     = "hello-world"
+}
+
+
+variable "lw-proxyscanner-cert" {
+  description = "Lacework Proxy Scanner Certificate"
+  type        = string
+  default     = "hello-world"
+}
+
+variable "lw-proxyscanner-key" {
+  description = "Lacework Proxy Scanner Key"
+  type        = string
+  default     = "hello-world"
+}
+
+variable "lw-account-name" {
+  description = "Lacework Account Name"
+  type        = string
+  default     = "hello-world"
+}

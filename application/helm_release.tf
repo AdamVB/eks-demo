@@ -14,15 +14,6 @@ provider "helm" {
   }
 }
 
-resource "helm_release" "nginx" {
-  name       = "nginx"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "nginx"
-
-  values = [
-    file("${path.module}/nginx-values.yaml")
-  ]
-}
 
 
 resource "helm_release" "lacework-agent" {
@@ -39,3 +30,50 @@ resource "helm_release" "lacework-agent" {
     value = var.lw-datacollector-token
   }
 }
+
+
+resource "helm_release" "lacework-admission-controller" {
+  name       = "lacework-admission-controller"
+  repository = "https://lacework.github.io/helm-charts/"
+  chart      = "admission-controller"
+
+  values = [
+    file("${path.module}/lw-admissioncontroller-values.yaml")
+  ]
+
+  set {
+    name  = "proxy-scanner.config.lacework.integration_access_token"
+    value = var.lw-proxyscanner-token
+  }
+  set {
+    name  = "proxy-scanner.config.lacework.account_name"
+    value = var.lw-account-name
+  }
+  set {
+    name  = "certs.serverCertificate"
+    value = var.lw-proxyscanner-cert
+  }
+  set {
+    name  = "certs.serverKey"
+    value = var.lw-proxyscanner-key
+  }
+  set {
+    name  = "webhooks.caBundle"
+    value = var.lw-proxyscanner-cabundle
+  }
+}
+
+
+
+
+resource "helm_release" "nginx" {
+  name       = "nginx"
+  repository = "https://charts.bitnami.com/bitnami"
+  chart      = "nginx"
+
+  values = [
+    file("${path.module}/nginx-values.yaml")
+  ]
+}
+
+

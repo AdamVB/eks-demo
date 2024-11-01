@@ -52,6 +52,7 @@ jobs:
         with:
           context: docker/nginx
           push: false
+          load: true
           #tags: ${{ steps.meta.outputs.tags }}
           tags: ${{ env.GHA_SHA }}
           labels: ${{ steps.meta.outputs.labels }}

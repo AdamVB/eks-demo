@@ -75,7 +75,7 @@ jobs:
         name: Scan container images for vulnerabitilies using Lacework
         with:
           LW_ACCOUNT_NAME: ${{ secrets.LW_ACCOUNT_NAME }}
-          LW_ACCESS_TOKEN: ${{ secrets.LW_PROXYSCANNER_TOKEN }}
+          LW_ACCESS_TOKEN: ${{ secrets.LW_INLINESCANNER_TOKEN }}
           IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_REPOSITORY}}/${{ env.IMAGE_NAME }}
           # Default github environment variable wouldnt work here - stuffing imagetag as the TAG           
           IMAGE_TAG: ${{ env.IMAGE_TAG }}

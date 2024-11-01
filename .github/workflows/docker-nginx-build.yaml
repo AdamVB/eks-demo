@@ -55,7 +55,7 @@ jobs:
         name: Scan container images for vulnerabitilies using Lacework
         with:
           LW_ACCOUNT_NAME: ${{ secrets.LW_ACCOUNT_NAME }}
-          LW_ACCESS_TOKEN: ${{ secrets.LW_ACCESS_TOKEN }}
+          LW_ACCESS_TOKEN: ${{ secrets.LW_PROXYSCANNER_TOKEN }}
           IMAGE_NAME: ${{ env.IMAGE_NAME }}
           IMAGE_TAG: ${{ steps.meta.outputs.tags }}
           RESULTS_IN_GITHUB_SUMMARY: True

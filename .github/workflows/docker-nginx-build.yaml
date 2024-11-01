@@ -42,7 +42,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,pattern={{branch}}   # Sets branch name as the tag for main branch
+            type=raw,value={{ github.ref_name }}
 
       - name: Build and push Docker image
         id: load

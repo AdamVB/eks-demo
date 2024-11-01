@@ -10,7 +10,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/nginx-demo
-
+  IMAGE_TAG: ${{ github.GITHUB_SHA}}
 
 jobs:
   build:
@@ -54,7 +54,8 @@ jobs:
           push: false
           load: true
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: ${{ env.GHA_SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GHA_SHA }}
+
           labels: ${{ steps.meta.outputs.labels }}
 
       - name: Print generated tags
@@ -66,8 +67,10 @@ jobs:
         with:
           LW_ACCOUNT_NAME: ${{ secrets.LW_ACCOUNT_NAME }}
           LW_ACCESS_TOKEN: ${{ secrets.LW_PROXYSCANNER_TOKEN }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          IMAGE_TAG: ${{ env.GHA_SHA }}
+          IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          # Default github environment variable wouldnt work here - stuffing imagetag as the TAG           
+          IMAGE_TAG: ${{ env.IMAGETAG }}
+
           SAVE_RESULTS_IN_LACEWORK: true
           RESULTS_IN_GITHUB_SUMMARY: true
 
@@ -78,7 +81,7 @@ jobs:
           context: docker/nginx
           push: true
           #tags: ${{ steps.meta.outputs.tags }}
-          tags: ${{ env.GHA_SHA }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.GHA_SHA }}
           labels: ${{ steps.meta.outputs.labels }}
 
       #- name: Generate artifact attestation

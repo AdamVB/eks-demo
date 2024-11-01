@@ -41,8 +41,6 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=raw,value={{ github.ref_name }}
 
       - name: Build and push Docker image
         id: load
@@ -52,6 +50,10 @@ jobs:
           load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Print generated tags
+        run: echo "Generated tags  ${{ steps.meta.outputs.tags }}"
+
 
       - uses: lacework/lw-scanner-action@v1.4.3
         name: Scan container images for vulnerabitilies using Lacework

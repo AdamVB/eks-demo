@@ -1,4 +1,22 @@
+---
 default:
   iac:
-    scan:
+    ignore: // optional array of filepaths to ignore, files are scanned but the findings are marked as suppressed, these will show as exceptions in the LW UI
+      - /dodgy.tf
+    exceptions: // optional array of policyId's or findingGuid's to mark suppressed, these will show as exceptions in the LW UI
+      - c-opl-s3-block-public-access
+      - lacework-iac-k8s-security-1
+      - tfsec-aws018
+    scan: // optional, default values or remote values will be used unless overridden here
+      opal: true // all these options are optional, defaults will apply unless overriddedn
+      checkov: true
       checkovModuleDownload: true
+      tfsec: false
+      terraform: false
+      terraformPlan: false
+      cloudformation: false
+      helm: true
+      awsCdk: false
+      kubernetes: true
+      kustomize: true
+      dockerfile: true

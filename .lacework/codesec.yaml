@@ -1,14 +1,13 @@
----
 default:
   iac:
-    ignore: // optional array of filepaths to ignore, files are scanned but the findings are marked as suppressed, these will show as exceptions in the LW UI
+    ignore:  # Optional array of filepaths to ignore, files are scanned but the findings are marked as suppressed, these will show as exceptions in the LW UI
       - /dodgy.tf
-    exceptions: // optional array of policyId's or findingGuid's to mark suppressed, these will show as exceptions in the LW UI
+    exceptions:  # Optional array of policyId's or findingGuid's to mark suppressed, these will show as exceptions in the LW UI
       - c-opl-s3-block-public-access
       - lacework-iac-k8s-security-1
       - tfsec-aws018
-    scan: // optional, default values or remote values will be used unless overridden here
-      opal: true // all these options are optional, defaults will apply unless overriddedn
+    scan:  # Optional, default values or remote values will be used unless overridden here
+      opal: true  # All these options are optional, defaults will apply unless overridden
       checkov: true
       checkovModuleDownload: true
       tfsec: false

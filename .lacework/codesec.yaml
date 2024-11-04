@@ -11,9 +11,9 @@ default:
       checkov: true
       checkovModuleDownload: true
       tfsec: false
-      terraform: false
+      terraform: true
       terraformPlan: false
-      cloudformation: false
+      cloudformation: true
       helm: true
       awsCdk: false
       kubernetes: true
